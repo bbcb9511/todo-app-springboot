@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.todoapp.repository.TodoMapper">
+    <select id="selectAll" resultType="com.example.todoapp.model.Todo">
+        SELECT todo_id, todo_title, todo_status, todo_detail FROM todos
+    </select>
+
+
+    <insert id="insert">
+        INSERT INTO todos (todo_title, todo_status, todo_detail) 
+        VALUES (#{todo.todoTitle}, #{todo.todoStatus}, #{todo.todoDetail})
+    </insert>
+    
+    <delete id="delete">
+        DELETE FROM todos WHERE todo_id = #{id}
+    </delete>
+
+    <update id="update">
+        UPDATE todos
+<!--        SET todo_title = #{todo.todoTitle}, todo_status = #{todo.todoStatus}, todo_detail = #{todo.todoDetail} -->        
+        <set>
+        		<if test="todo.todoTitle != null">todo_title = #{todo.todoTitle}, </if>
+        		<if test="todo.todoStatus != null">todo_status = #{todo.todoStatus}, </if>
+        		<if test="todo.todoDetail != null">todo_detail = #{todo.todoDetail}, </if>
+        </set>        
+        WHERE
+            todo_id = #{id}
+    </update>
+</mapper>
+
+
